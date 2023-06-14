@@ -1,7 +1,38 @@
 import './App.css';
-import './SWscript'
+import { useEffect } from 'react';
+
 
 function App() {
+  useEffect(() => {
+    const $cont = document.querySelector('.cont');
+    const $elsArr = Array.from(document.querySelectorAll('.el'));
+    const $closeBtnsArr = Array.from(document.querySelectorAll('.el__close-btn'));
+
+    setTimeout(function () {
+      $cont.classList.remove('s--inactive');
+    }, 200);
+
+    $elsArr.forEach(function ($el) {
+      $el.addEventListener('click', function () {
+        if ($el.classList.contains('s--active')) return;
+        $cont.classList.add('s--el-active');
+        $el.classList.add('s--active');
+      });
+    });
+
+    $closeBtnsArr.forEach(function ($btn) {
+      $btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        $cont.classList.remove('s--el-active');
+
+        const activeElement = document.querySelector('.el.s--active');
+        if (activeElement !== null) {
+          activeElement.classList.remove('s--active');
+        }
+      });
+    });
+  }, []);
+
   return (
     <div className="App">
       <div className="cont s--inactive">
